@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teendő lista</title>
+</head>
+<body>
+    <div>
+        <p>Teendő</p>
+        <input id="teendo">
+    </div>
+    <button onclick="hozzaad()">Teendő hozzáadása</button>
+    <button onclick="reset()">Lista törlése</button>
+    <h1>Teendők száma: <span id="darab">0</span></h1>
+    <ul id="teendo_lista"></ul>
+</body>
+<script>
+    let teendok = ['Projekt befejezése', 'Meeting előkészítése', 'E-mail küldése', 'Prezentáció elkészítése'];
+
+    // Lista frissítése
+    function renderList() {
+        let tlista = document.getElementById("teendo_lista");
+        tlista.innerHTML = ""; // Törli az előző listát
+        teendok.forEach((teendo, index) => {
+            tlista.innerHTML += `
+                <li>
+                    <input type="checkbox" id="teendo_${index}" onclick="toggleStrike(this)">
+                    <label for="teendo_${index}">${teendo}</label>
+                    <button onclick="torol(${index})">Törlés</button>
+                </li>`;
+        });
+
+        document.getElementById("darab").innerHTML = teendok.length; // Megjeleníti a lista hosszát
+    }
+
+    // Lista törlés
+    function reset() {
+        teendok = []; // Üres lista
+        renderList(); // Frissíti a listát
+    }
+
+    // Teendő hozzáadása
+    function hozzaad() {
+        let teendoNeve = document.getElementById("teendo").value;
+        if (teendoNeve.trim()) { // Ha van megadva teendő
+            teendok.push(teendoNeve); // Hozzáadja a listához
+            document.getElementById("teendo").value = ""; // Törli a szövegmezőt
+            renderList(); // Frissíti a listát
+        }
+    }
+
+    // Kipipálás és áthúzás
+    function toggleStrike(checkbox) {
+        let label = checkbox.nextElementSibling; // A checkbox melletti label elem
+        if (checkbox.checked) {
+            label.style.textDecoration = "line-through"; // Áthúzza a teendőt
+        } else {
+            label.style.textDecoration = "none"; // Eltávolítja az áthúzást
+        }
+    }
+
+    // Teendő törlése a listából
+    function torol(index) {
+        teendok.splice(index, 1); // Törli a kijelölt teendőt
+        renderList(); // Frissíti a listát
+    }
+
+    // Initial render
+    renderList();
+</script>
+</body>
+</html>
