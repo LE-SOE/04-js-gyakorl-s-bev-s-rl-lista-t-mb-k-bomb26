@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bevásárlólista</title>
+</head>
+<body>
+    <div>
+        <p>Cucc</p>
+        <input id="cucc">
+    </div>
+    <button onclick="hozzaad()">Listához ad</button>
+    <button onclick="reset()">Reset lista</button>
+    <h1>Meg kell venni: <br> termékek: <span id="darab">0</span></h1>
+    <ul id="bev_lista"></ul>
+</body>
+<script>
+    let termékek = ['Tej', 'Vaj', 'Csoki', 'Kávé'];
+    reset();
+
+    function reset() {
+        let blista = document.getElementById("bev_lista");
+        blista.innerHTML = "";
+        termékek = ['Tej', 'Vaj', 'Csoki', 'Kávé'];
+
+        // Hozzáadás checkboxokkal minden termékhez
+        termékek.forEach((termek, index) => {
+            blista.innerHTML += `
+                <li>
+                    <input type="checkbox" id="termek_${index}" onclick="toggleStrike(this)">
+                    <label for="termek_${index}">${termek}</label>
+                </li>`;
+        });
+
+        document.getElementById("darab").innerHTML = termékek.length;
+    }
+
+    function hozzaad() {
+        let cuccNeve = document.getElementById("cucc").value;
+        if (cuccNeve.trim()) {
+            termékek.push(cuccNeve);
+            let blista = document.getElementById("bev_lista");
+            let newIndex = termékek.length - 1;
+
+            // Hozzáadás egy új elem checkboxával
+            blista.innerHTML += `
+                <li>
+                    <input type="checkbox" id="termek_${newIndex}" onclick="toggleStrike(this)">
+                    <label for="termek_${newIndex}">${cuccNeve}</label>
+                </li>`;
+
+            document.getElementById("darab").innerHTML = termékek.length;
+        }
+    }
+
+    // Funkció a kipipált elemek áthúzására
+    function toggleStrike(checkbox) {
+        let label = checkbox.nextElementSibling;
+        if (checkbox.checked) {
+            label.style.textDecoration = "line-through";
+        } else {
+            label.style.textDecoration = "none";
+        }
+    }
+</script>
+</html>
